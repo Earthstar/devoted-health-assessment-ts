@@ -1,3 +1,5 @@
+import { testPrint } from './parser.js';
+
 console.log("hello world")
 import * as readline from 'node:readline';
 
@@ -8,5 +10,5 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', line => {
-  console.log(line)
+  testPrint(line)
 })
