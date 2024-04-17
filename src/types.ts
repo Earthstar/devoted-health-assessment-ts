@@ -14,3 +14,8 @@ export interface UserCommand {
   arg1?: string,
   arg2?: string
 }
+
+export interface DatabaseStorage {
+  keyValueMap: {[key: string]: string},
+  valueCountMap: {[key: string]: number}
+}
