@@ -53,6 +53,14 @@ describe('InMemoryDatabase', () => {
     expect(inMemoryDb.count('bar')).toEqual(1);
   });
 
+  it("if a value is set to a different value, updates count", () => {
+    const inMemoryDb = new InMemoryDatabase();
+    inMemoryDb.setKeyValue('foo', 'bar');
+    inMemoryDb.setKeyValue('foo', 'baz');
+    expect(inMemoryDb.count('bar')).toEqual(0);
+    expect(inMemoryDb.count('baz')).toEqual(1);
+  })
+
   it("can apply commands", () => {
     const inMemoryDb = new InMemoryDatabase();
     inMemoryDb.apply({

@@ -10,6 +10,11 @@ export class InMemoryDatabase {
   }
 
   setKeyValue(key, value) {
+    const originalValue = this.keyValueMap[key]
+    if (originalValue) {
+      this.valueCountMap[originalValue] -= 1;
+    }
+
     this.keyValueMap[key] = value;
     if (this.valueCountMap[value] === undefined) {
       this.valueCountMap[value] = 1
