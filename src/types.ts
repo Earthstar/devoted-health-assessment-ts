@@ -19,3 +19,8 @@ export interface DatabaseStorage {
   keyValueMap: {[key: string]: string},
   valueCountMap: {[key: string]: number}
 }
+
+export interface TransactionRecords {
+  uncommittedDb: DatabaseStorage,
+  transactions: UserCommand[][]
+}
