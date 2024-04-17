@@ -1,7 +1,8 @@
-import { testPrint } from './parser.js';
+import { parseCommand } from './parser.js';
 
 console.log("hello world")
 import * as readline from 'node:readline';
+import { Command } from './types.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -10,5 +11,14 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', line => {
-  testPrint(line)
+  try {
+    const command = parseCommand(line)
+    if (command.command === Command.END) {
+      rl.close()
+      return
+    }
+  } catch (e) {
+    console.log(e)
+  }
+
 })
