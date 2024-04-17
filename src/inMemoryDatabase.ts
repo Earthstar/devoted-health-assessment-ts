@@ -4,9 +4,9 @@ export class InMemoryDatabase {
   private keyValueMap: {[key: string]: string};
   private valueCountMap: {[key: string]: number};
 
-  constructor() {
-    this.keyValueMap = {}
-    this.valueCountMap = {}
+  constructor(keyValueMap = {}, valueCountMap = {}) {
+    this.keyValueMap = keyValueMap
+    this.valueCountMap = valueCountMap
   }
 
   setKeyValue(key, value) {
@@ -48,5 +48,9 @@ export class InMemoryDatabase {
       default:
         throw new Error(`Unhandled command ${command}`)
     }
+  }
+
+  deepCopy() {
+    return new InMemoryDatabase(structuredClone(this.keyValueMap), structuredClone(this.valueCountMap))
   }
 }
