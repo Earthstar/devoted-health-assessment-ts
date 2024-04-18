@@ -53,41 +53,48 @@ describe('InMemoryDatabase', () => {
     expect(inMemoryDb.count('bar')).toEqual(1);
   });
 
-  it("if a value is set to a different value, updates count", () => {
+  it('if a value is set to a different value, updates count', () => {
     const inMemoryDb = new InMemoryDatabase();
     inMemoryDb.setKeyValue('foo', 'bar');
     inMemoryDb.setKeyValue('foo', 'baz');
     expect(inMemoryDb.count('bar')).toEqual(0);
     expect(inMemoryDb.count('baz')).toEqual(1);
-  })
+  });
 
-  it("can apply commands", () => {
+  it('can apply commands', () => {
     const inMemoryDb = new InMemoryDatabase();
     inMemoryDb.apply({
       command: Command.SET,
-      arg1: "foo",
-      arg2: "bar"
-    })
-    expect(inMemoryDb.apply({
-      command: Command.GET,
-      arg1: "foo",
-    })).toEqual("bar")
-    expect(inMemoryDb.apply({
-      command: Command.COUNT,
-      arg1: "bar",
-    })).toEqual(1)
+      arg1: 'foo',
+      arg2: 'bar',
+    });
+    expect(
+      inMemoryDb.apply({
+        command: Command.GET,
+        arg1: 'foo',
+      }),
+    ).toEqual('bar');
+    expect(
+      inMemoryDb.apply({
+        command: Command.COUNT,
+        arg1: 'bar',
+      }),
+    ).toEqual(1);
     inMemoryDb.apply({
       command: Command.DELETE,
-      arg1: "foo",
-    })
-    expect(inMemoryDb.apply({
-      command: Command.GET,
-      arg1: "foo",
-    })).toBeNull()
-    expect(inMemoryDb.apply({
-      command: Command.COUNT,
-      arg1: "bar",
-    })).toEqual(0)
-  })
+      arg1: 'foo',
+    });
+    expect(
+      inMemoryDb.apply({
+        command: Command.GET,
+        arg1: 'foo',
+      }),
+    ).toBeNull();
+    expect(
+      inMemoryDb.apply({
+        command: Command.COUNT,
+        arg1: 'bar',
+      }),
+    ).toEqual(0);
+  });
 });
-
