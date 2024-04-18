@@ -61,3 +61,14 @@ export function parseCommand(text: string): UserCommand {
       throw new Error(`Did not recognize command ${text}`)
   }
 }
+
+// Returns a string to be printed, or undefined if no string should be printed
+export function formatResponse(response: string | number | void): string | undefined {
+  if (response === undefined) {
+    return undefined;
+  }
+  if (response === null) {
+    return "NULL";
+  }
+  return "" + response;
+}

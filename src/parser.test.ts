@@ -1,4 +1,4 @@
-import { parseCommand } from './parser.js';
+import { formatResponse, parseCommand } from './parser.js';
 import { Command } from './types.js';
 
 describe("parse", () => {
@@ -83,5 +83,23 @@ describe("parse", () => {
   it("throws an error if the command is not recognized", () => {
     const command = "asdf"
     expect(() => parseCommand(command)).toThrow()
+  })
+})
+
+describe("formatResponse", () => {
+  it("returns string if response is string", () => {
+    expect(formatResponse("foo")).toEqual("foo")
+  })
+
+  it("returns string if response is number", () => {
+    expect(formatResponse(1)).toEqual("1")
+  })
+
+  it("returns 'NULL' if response is null", () => {
+    expect(formatResponse(null)).toEqual("NULL")
+  })
+
+  it("returns undefined if response is undefined", () => {
+    expect(formatResponse(undefined)).toBeUndefined()
   })
 })
