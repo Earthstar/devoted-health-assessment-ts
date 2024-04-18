@@ -52,4 +52,85 @@ describe("Assessment tests", () => {
       arg1: 'B',
     })).toBeNull();
   })
+
+  it("Example #2", () => {
+    const transactionalDb = new TransactionalDatabase();
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: 'a',
+      arg2: 'foo',
+    });
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: 'a',
+      arg2: 'foo',
+    });
+    expect(transactionalDb.apply({
+      command: Command.COUNT,
+      arg1: 'foo',
+    })).toEqual(1);
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toEqual("foo");
+    transactionalDb.apply({
+      command: Command.DELETE,
+      arg1: 'a',
+    })
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toBeNull()
+    expect(transactionalDb.apply({
+      command: Command.COUNT,
+      arg1: 'a',
+    })).toEqual(0)
+  })
+
+  it("Example #3", () => {
+    const transactionalDb = new TransactionalDatabase();
+    transactionalDb.apply({
+      command: Command.BEGIN,
+    })
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: 'a',
+      arg2: 'foo',
+    });
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toEqual("foo");
+    transactionalDb.apply({
+      command: Command.BEGIN,
+    })
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: 'a',
+      arg2: 'bar',
+    });
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toEqual("bar");
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: 'a',
+      arg2: 'baz',
+    });
+    transactionalDb.apply({
+      command: Command.ROLLBACK,
+    })
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toEqual("foo");
+    transactionalDb.apply({
+      command: Command.ROLLBACK,
+    })
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: 'a',
+    })).toBeNull()
+  })
 })

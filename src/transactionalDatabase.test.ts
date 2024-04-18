@@ -83,6 +83,29 @@ describe('Transactional Database', () => {
     })).toEqual("bar")
   })
 
+  it("Can rollback a database to empty state", () => {
+    const transactionalDb = new TransactionalDatabase()
+    transactionalDb.apply({
+      command: Command.BEGIN
+    })
+    transactionalDb.apply({
+      command: Command.SET,
+      arg1: "foo",
+      arg2: "bar"
+    })
+    transactionalDb.apply({
+      command: Command.ROLLBACK
+    })
+    expect(transactionalDb.apply({
+      command: Command.GET,
+      arg1: "foo"
+    })).toBeNull()
+    expect(transactionalDb.apply({
+      command: Command.COUNT,
+      arg1: "bar"
+    })).toEqual(0)
+  })
+
   it("rollback will remove count", () => {
     const transactionalDb = new TransactionalDatabase()
     transactionalDb.apply({

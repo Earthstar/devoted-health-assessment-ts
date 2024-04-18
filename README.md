@@ -7,11 +7,11 @@ npm run build
 npm run start
 ```
 
-# Usage
+# Time and Memory analysis
+
+# Known issues
+- When setting keys to different values, we don't delete internal count storage (memory leak)
 
 # TODO
-- Set up input loop: https://serialport.io/docs/api-parser-readline
-- set up input parsing
-- set up testing framework
-- define state machine of inputs
-- design of data structure
+- Hook up db to output
+- lint

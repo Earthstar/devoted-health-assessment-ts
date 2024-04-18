@@ -21,8 +21,7 @@ export class TransactionalDatabase {
     if (!this.inTransaction()) {
       return this.committed.apply(userCommand);
     } else {
-      // store the command in the last transaction, and apply it to the uncommitted Db
-      this.transactionRecords.transactions.at(-1).push(userCommand)
+      this.addCommandToLastTransaction(userCommand)
       return this.transactionRecords.uncommittedDb.apply(userCommand)
     }
   }
@@ -43,10 +42,11 @@ export class TransactionalDatabase {
       throw new Error("TRANSACTION NOT FOUND")
     }
 
-    const lastTransaction = this.transactionRecords.transactions.pop()
+    const lastTransaction = this.getLastTransaction()
     if (!lastTransaction) {
       throw new Error("TRANSACTION NOT FOUND")
     }
+    this.removeLastTransaction()
 
     delete this.transactionRecords.uncommittedDb
     const rolledBackDb = this.committed.deepCopy()
@@ -66,7 +66,26 @@ export class TransactionalDatabase {
     }
   }
 
-  inTransaction() {
+  private inTransaction() {
     return !!this.transactionRecords
+  }
+
+  private getLastTransaction() {
+    return this.transactionRecords.transactions.at(-1)
+  }
+
+  private removeLastTransaction() {
+    if (this.transactionRecords.transactions.length === 1) {
+      this.transactionRecords.transactions = []
+    }
+    this.transactionRecords.transactions.pop()
+  }
+
+  private addCommandToLastTransaction(userCommand: UserCommand) {
+    if (this.transactionRecords.transactions.length === 0) {
+      this.transactionRecords.transactions = [[userCommand]]
+    } else {
+      this.getLastTransaction().push(userCommand)
+    }
   }
 }
