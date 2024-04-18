@@ -48,12 +48,13 @@ describe('Transactional Database', () => {
       command: Command.GET,
       arg1: "foo"
     })).toEqual("bar")
-    transactionalDb.commitTransaction()
   })
 
   it("Rollback, if there are no transactions, throws an error", () => {
     const transactionalDb = new TransactionalDatabase()
-    expect(() => transactionalDb.rollbackTransaction()).toThrow()
+    expect(() => transactionalDb.apply({
+      command: Command.ROLLBACK
+    })).toThrow()
   })
 
   it("Can rollback a SET operation", () => {

@@ -2,7 +2,7 @@ import { InMemoryDatabase } from './inMemoryDatabase.js';
 import { Command, UserCommand } from './types.js';
 
 export class TransactionalDatabase {
-  private transactionRecords
+  private transactionRecords: { uncommittedDb: InMemoryDatabase; transactions: UserCommand[][]; }
   private committed: InMemoryDatabase
 
   constructor() {
@@ -26,7 +26,7 @@ export class TransactionalDatabase {
     }
   }
 
-  beginTransaction() {
+  private beginTransaction() {
     if (!this.inTransaction()) {
       this.transactionRecords = {
         uncommittedDb: this.committed.deepCopy(),
@@ -37,7 +37,7 @@ export class TransactionalDatabase {
     }
   }
 
-  rollbackTransaction() {
+  private rollbackTransaction() {
     if (!this.inTransaction()) {
       throw new Error("TRANSACTION NOT FOUND")
     }
@@ -58,7 +58,7 @@ export class TransactionalDatabase {
     this.transactionRecords.uncommittedDb = rolledBackDb;
   }
 
-  commitTransaction() {
+  private commitTransaction() {
     if (this.inTransaction()) {
       delete this.committed
       this.committed = this.transactionRecords.uncommittedDb
