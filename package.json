@@ -1,7 +1,7 @@
 {
-  "name": "node-typescript-boilerplate",
-  "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "name": "devoted-health-assessment-ts",
+  "version": "1.0.0",
+  "description": "Devoted health assessment",
   "type": "module",
   "engines": {
     "node": ">= 20.9 < 21"
@@ -33,7 +33,7 @@
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
+  "author": "Deena Wang",
   "license": "Apache-2.0",
   "dependencies": {
     "tslib": "~2.6"
